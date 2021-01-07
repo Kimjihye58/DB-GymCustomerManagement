@@ -1,0 +1,89 @@
+Public Class 회원정보
+  Dim cn As OdbcConnection
+  Dim cmd As OdbcCommand
+  Dim sql As String
+
+  Dim searchValue
+
+  private Sub 회원정보_Load(sender As Object, e As EventArgs) Handles MyBase_Load
+    cn = New OdbcConnection("dsn=DBDB;")
+  End Sub
+
+  private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+    Dim dr As odbcDataReader
+
+    sql = " SELECT * FROM Sheet2 WHERE 회원이름 LIKE '%" + TextBox14.Text + "%'  "
+    cmd = New OdbcCommand(sql, cn)
+    cn.Open()
+
+    dr = cmd.ExecuteReader
+
+    If dr.Read() Then 
+      TextBox7.Text = dr.GerString(0)
+      TextBox8.Text = dr.GerString(1)
+      TextBox9.Text = dr.GerString(4)
+      TextBox10.Text = dr.GerString(5)
+      TextBox11.Text = dr.GerInt16(7)
+      TextBox12.Text = dr.GerString(6)
+      TextBox4.Text = dr.GerString(11)
+      TextBox2.Text = dr.GerString(12)
+
+      If Not dr.IsDBNull(10) Then
+        TextBox3.Text = dr.GerString(10)
+      End If 
+
+      ComboBox1.Text = ""
+      ComboBox1.SelectedItem = dr.GerString(3)
+      If dr.GerString(2) = "여" Then 
+        RadioButton1.checked = True
+        RadioButton2.checked = False
+      Else
+        RadioButton2.checked = True
+        RadioButton1.checked = False
+      End If
+
+
+
+    Else 
+      MessageBox.Show("결과가 없습니다.")
+    End If 
+
+    dr.Close()
+    cn.Close()
+    MsgBox("끝났습니다. ")
+
+  End Sub
+
+  private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs)
+  End Sub
+
+  private Sub Button5_click(sender As Object, e As EventArgs) Handles Button5_click
+    전체화면 락카.Show()
+  End Sub
+
+  private Sub Button8_click(sender As Object, e As EventArgs) Handles Button8_click
+    Dim mvpForm As New MVP(TextBox14.Text)
+    mvpForm.Show()
+  End Sub
+
+  private Sub Button1_click(sender As Object, e As EventArgs) Handles Button1_click
+    sql = "DELECT FROM Sheet2 WHERE 회원번호 = '" & TextBox8.Text & "'  "
+    cmd = New OdbcCommand(sql, cn)
+    cn.Open()
+
+    cmd.ExecuteNonQuery()
+    cn.Close()
+    TextBox7.Text = ""
+    TextBox8.Text = ""
+    TextBox9.Text = ""
+    TextBox10.Text = ""
+    TextBox11.Text = ""
+    TextBox12.Text = ""
+    TextBox2.Text = ""
+    TextBox4.Text = ""
+    TextBox3.Text = ""
+    ComboBox1.Text = ""
+    MessageBox.Show("삭제되었습니다. ")
+  End Sub
+
+##추가 화면조회코딩 4번부터
