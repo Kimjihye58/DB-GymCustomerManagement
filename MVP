@@ -1,0 +1,54 @@
+Imports System.data.Odbc
+public class MVP
+	Dim cn As OdbcConnection
+	Dim cmd As OdbcCommand
+	Dim sql As String
+	Dim mvpMember
+	Public Sub New(parame As String)
+	
+		'디자이너에서 이 호출이 필요합니다. 
+		InitializeComponent()
+		
+		'InitializeComponent() 호출 뒤에 초기화 코드를 추가하세요.
+		mvpMember = parame
+		
+	End Sub
+	private Sub MVP_Load(sender As Object, e As EventArgs) handles MyBase.Load
+		cn = New OdbcConnection("dsn=DBDB;")
+		Dim dr As OdbcDataReader
+		sql = "SELECT * FROM Sheet2 WHERE 회원이름 LIKE '%" + mvpMember + "%'  "
+		cmd = New OdbcCommand(sql, cn)
+		cn.Open()
+		dr = cmd.ExecuteReader
+		
+		If dr.Read() Then 
+      If dr.GetString(3) <> "MVP" Then
+        Messagebox.Show("MVP가 아닙니다.")
+      End If 
+      Try 
+        TextBox1.Text = dr.GetInt16(10)
+        TextBox2.Text = dr.GetInt16(7)
+        TextBox3.Text = dr.GetString(8)
+        TextBox4.Text = dr.GetString(9)
+      Catch ex As Exception
+        MassageBox.Show("정보에 잘못된 값이 있습니다. ")
+      End Try
+    Else
+    End If 
+    dr.Close()
+    cn.Close()
+  End Sub
+  private Sub Button2_Click(sender As Object, e As EventArgs) handles Button2_Click
+    sql = "Update sheet2 Set MVP시작일 = '" & TextBox3.Text & "'WHERE 회원이름 = '" & mvpMember & "'"
+    sql = "Update sheet2 Set MVP종료일 = '" & TextBox4.Text & "'WHERE 회원이름 = '" & mvpMember & "'"
+    sql = "Update sheet2 Set PT남은횟수 = '" & TextBox1.Text & "'WHERE 회원이름 = '" & mvpMember & "'"
+
+    cmd = New OdbcCommand(slq, cn)
+    cn.Open()
+
+    cmd.ExccuteNonQuery()
+    cn.Close()
+
+    Messagebox.Show("저장되었습니다. ")
+  End Sub
+End Sub
