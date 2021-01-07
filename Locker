@@ -1,0 +1,70 @@
+Public Class 락카
+  Private Sub Label4_Click(sender As Object, e As EventArgs)
+
+  End Sub
+
+  Private Sub Label3_Click(sender As Object, e As EventArgs)
+
+  End Sub
+
+  Private Sub 락카_Load(sender As Object, e As EventArgs) Handles MyBase_Load
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    DataGrinView1.Rows.Add()
+    
+    Dim cn As OdbcConnection 
+    Dim cmd As OdbcCommand
+    Dim sql As String
+    Dim dr As OdbcDataReader
+
+    Dim thisLocker As Integer
+
+    cn = New OdbcConnection("dsn=DBDB;")
+    sql = "SELECT 락카번호 FROM Sheet2 WHERE 락카번호 is not Null Order By 락카번호"
+    cn.Open()
+
+    dr = cmd.ExeceteReader
+
+    If dr.Read() Then
+      thisLocker = dr.GetInt32(0)
+      For i = 0 To DataGrinView1.RowCount - 1
+        For j = 0 To DataGrinView1.ColumnCount - 1
+
+          DataGrinView1.Rows(i).Cells(j).Value = (10 + i) + (J + 1)
+
+          If thisLocker = (10 + i) + (J + 1) then 
+            DataGrinView1.Rows(i).Cells(j).Style.BackColor = Color.Yellow
+            If dr.Read() then 
+              thisLocker = dr.GetInt32(0)
+            End If
+          End If
+        Next
+      Next
+    End If
+
+    cn.Close()
+
+    'DATA read SELECT'
+
+  End Sub
+
+  Private Sub DataGrinView1_CellContentClick(sender As Object, e As EventArgs) Handles DataGrinView1_CellContentClick
+
+  End Sub
+End Class
